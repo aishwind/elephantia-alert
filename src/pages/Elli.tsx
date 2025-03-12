@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Transition from "@/components/Transition";
@@ -9,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mic, Send, Pause, Play, Volume2, Bot } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { sendMessageToGemini, ELLI_SYSTEM_PROMPT } from "@/utils/geminiApi";
+import { sendMessageToGemini } from "@/utils/geminiApi";
 
 const Elli = () => {
   const [messages, setMessages] = useState([

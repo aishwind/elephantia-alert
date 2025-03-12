@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -52,15 +53,21 @@ const elephantData = [
   },
 ];
 
-const OpenStreetMap = () => {
+// Component to handle map reference
+function MapController() {
   const mapRef = useRef<L.Map | null>(null);
-
+  const map = useMap();
+  
   useEffect(() => {
-    if (mapRef.current) {
-      // Initial map setup if needed
+    if (map) {
+      mapRef.current = map;
     }
-  }, []);
+  }, [map]);
+  
+  return null;
+}
 
+const OpenStreetMap = () => {
   // Risk level color mapping
   const getRiskColor = (risk: string) => {
     switch (risk) {
@@ -78,21 +85,20 @@ const OpenStreetMap = () => {
   return (
     <div className="relative h-[600px] overflow-hidden rounded-xl border border-elephant-200 dark:border-elephant-800 shadow-card">
       <MapContainer
-        whenCreated={(map) => {
-          mapRef.current = map;
-        }}
-        center={[11.6025, 79.8083]}
+        center={[11.6025, 79.8083] as L.LatLngExpression}
         zoom={12}
         style={{ height: "100%", width: "100%" }}
       >
+        <MapController />
+        
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
         {/* Railway track representation */}
         <Circle
-          center={[11.6025, 79.8083]}
+          center={[11.6025, 79.8083] as L.LatLngExpression}
           pathOptions={{ 
             color: '#a3a3a3',
             fillColor: '#a3a3a3',
@@ -105,7 +111,7 @@ const OpenStreetMap = () => {
         {elephantData.map((elephant) => (
           <Marker
             key={elephant.id}
-            position={elephant.position}
+            position={elephant.position as L.LatLngExpression}
             icon={elephant.risk === "high" ? alertIcon : elephantIcon}
           >
             <Popup>

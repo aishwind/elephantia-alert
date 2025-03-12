@@ -1,6 +1,4 @@
 
-import { useToast } from "@/components/ui/use-toast";
-
 // Gemini API configuration
 const API_KEY = "AIzaSyBgXMg8li6jbBdN1dorXBSDLnf76IeJ-eM";
 const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
@@ -53,18 +51,25 @@ export const sendMessageToGemini = async (
 ): Promise<string> => {
   try {
     // Prepare the prompt with system instructions and conversation history
-    let conversationContext = [
-      { role: "system", content: ELLI_SYSTEM_PROMPT },
-      ...chatHistory.slice(-10), // Keep only the last 10 messages for context
-      { role: "user", content: message },
-    ];
-
-    // Format the messages for Gemini API
+    const systemMessage = { role: "user", content: ELLI_SYSTEM_PROMPT };
+    
+    // Format the messages for Gemini API - Gemini doesn't support "system" role
+    // so we need to attach the system prompt as a user message first
     const requestBody = {
-      contents: conversationContext.map(msg => ({
-        role: msg.role === "system" ? "user" : msg.role,
-        parts: [{ text: msg.content }]
-      })),
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: ELLI_SYSTEM_PROMPT }]
+        },
+        ...chatHistory.slice(-10).map(msg => ({
+          role: msg.role === "assistant" ? "model" : "user",
+          parts: [{ text: msg.content }]
+        })),
+        {
+          role: "user",
+          parts: [{ text: message }]
+        }
+      ],
       generationConfig: {
         temperature: 0.7,
         topK: 40,
@@ -91,6 +96,8 @@ export const sendMessageToGemini = async (
       ]
     };
 
+    console.log("Sending request to Gemini API:", JSON.stringify(requestBody, null, 2));
+
     // Make the API call
     const response = await fetch(`${API_URL}?key=${API_KEY}`, {
       method: "POST",
@@ -101,6 +108,7 @@ export const sendMessageToGemini = async (
     });
 
     const data = await response.json() as GeminiResponse;
+    console.log("Gemini API response:", JSON.stringify(data, null, 2));
 
     // Check for API errors
     if (data.error) {
