@@ -1,5 +1,5 @@
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Transition from "@/components/Transition";
 import Navigation from "@/components/Navigation";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mic, Send, Pause, Play, Volume2, Bot } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { sendMessageToGemini, ELLI_SYSTEM_PROMPT } from "@/utils/geminiApi";
 
 const Elli = () => {
   const [messages, setMessages] = useState([
@@ -20,6 +21,7 @@ const Elli = () => {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoadingResponse, setIsLoadingResponse] = useState(false);
   const messageEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -28,33 +30,49 @@ const Elli = () => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Send message
-  const handleSendMessage = () => {
+  // Effect to scroll to bottom whenever messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // Send message to Gemini API
+  const handleSendMessage = async () => {
     if (!input.trim()) return;
 
     // Add user message
-    setMessages(prev => [...prev, { role: "user", content: input }]);
+    const userMessage = { role: "user", content: input };
+    setMessages(prev => [...prev, userMessage]);
     setInput("");
     setIsTyping(true);
+    setIsLoadingResponse(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const responses = [
-        "Elephants are the largest land mammals on Earth. African elephants can weigh up to 6 tons and stand up to 13 feet tall at the shoulder!",
-        "Did you know? Elephants communicate using low-frequency sounds that can travel up to 6 miles away. They can also use seismic communication, detecting vibrations through their feet.",
-        "Elephants have amazing memories! They can remember migration routes, water sources, and other elephants for decades. This is why we say 'an elephant never forgets.'",
-        "Conservation efforts are crucial for elephant populations. They face threats from habitat loss, poaching, and human-elephant conflict. Our early warning system helps reduce these conflicts along railway corridors.",
-        "Elephants are keystone species, meaning they play a crucial role in maintaining the biodiversity of their ecosystems. They create clearings in forests, disperse seeds, and maintain grasslands."
-      ];
+    try {
+      // Convert messages to format needed for API
+      const chatHistory = messages.map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }));
+
+      // Call Gemini API
+      const response = await sendMessageToGemini(input, chatHistory);
       
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-      setMessages(prev => [...prev, { role: "assistant", content: randomResponse }]);
-      setIsTyping(false);
+      // Add assistant response
+      setMessages(prev => [...prev, { role: "assistant", content: response }]);
       
       // Auto-play the response
       setIsPlaying(true);
       setTimeout(() => setIsPlaying(false), 6000);
-    }, 1500);
+    } catch (error) {
+      console.error("Error getting response:", error);
+      toast({
+        title: "Error",
+        description: "Failed to get a response. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsTyping(false);
+      setIsLoadingResponse(false);
+    }
   };
 
   // Handle form submission
@@ -95,7 +113,7 @@ const Elli = () => {
               </h1>
               <p className="text-elephant-600 dark:text-elephant-300 max-w-3xl mx-auto">
                 Your AI virtual assistant dedicated to elephant conservation and education. 
-                Ask Elli anything about elephants, conservation efforts, or our early warning system.
+                Ask Elli anything about elephants, conservation efforts, or wildlife protection.
               </p>
             </motion.div>
             
@@ -123,11 +141,11 @@ const Elli = () => {
                       <div className="space-y-2">
                         <h4 className="font-medium text-elephant-900 dark:text-white">Capabilities</h4>
                         <ul className="text-sm text-elephant-600 dark:text-elephant-400 space-y-1">
-                          <li>• Answer questions about elephants</li>
-                          <li>• Explain conservation strategies</li>
-                          <li>• Provide information about our tracking system</li>
-                          <li>• Offer educational resources</li>
-                          <li>• Multi-language support (coming soon)</li>
+                          <li>• Elephant facts and species information</li>
+                          <li>• Conservation programs and efforts</li>
+                          <li>• Wildlife protection tips</li>
+                          <li>• Interactive Q&A on conservation</li>
+                          <li>• Educational resources for all ages</li>
                         </ul>
                       </div>
                       
@@ -204,10 +222,15 @@ const Elli = () => {
                         <Input
                           value={input}
                           onChange={(e) => setInput(e.target.value)}
-                          placeholder="Ask Elli something about elephants..."
+                          placeholder="Ask Elli something about elephants or conservation..."
                           className="flex-1"
+                          disabled={isLoadingResponse}
                         />
-                        <Button type="submit" size="icon">
+                        <Button 
+                          type="submit" 
+                          size="icon"
+                          disabled={isLoadingResponse || !input.trim()}
+                        >
                           <Send className="h-4 w-4" />
                         </Button>
                       </form>
