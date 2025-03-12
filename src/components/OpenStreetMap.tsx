@@ -27,7 +27,7 @@ const elephantData = [
     type: "Group",
     count: 5,
     status: "moving",
-    position: [11.6025, 79.8083], // [lat, lng]
+    position: [11.6025, 79.8083] as [number, number], // [lat, lng]
     risk: "low",
     lastUpdated: "2 min ago",
   },
@@ -37,7 +37,7 @@ const elephantData = [
     type: "Individual",
     count: 1,
     status: "stationary",
-    position: [11.5825, 79.8283],
+    position: [11.5825, 79.8283] as [number, number],
     risk: "medium",
     lastUpdated: "Just now",
   },
@@ -47,7 +47,7 @@ const elephantData = [
     type: "Group",
     count: 8,
     status: "approaching",
-    position: [11.6225, 79.7883],
+    position: [11.6225, 79.7883] as [number, number],
     risk: "high",
     lastUpdated: "5 min ago",
   },
@@ -76,15 +76,18 @@ const OpenStreetMap = () => {
     }
   };
 
+  // Get map reference when it's created
+  const handleMapCreated = (map: L.Map) => {
+    mapRef.current = map;
+  };
+
   return (
     <div className="relative h-[600px] overflow-hidden rounded-xl border border-elephant-200 dark:border-elephant-800 shadow-card">
       <MapContainer
-        center={[11.6025, 79.8083]}
+        center={[11.6025, 79.8083] as [number, number]}
         zoom={12}
         style={{ height: "100%", width: "100%" }}
-        whenCreated={(map) => {
-          mapRef.current = map;
-        }}
+        ref={mapRef}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -93,7 +96,7 @@ const OpenStreetMap = () => {
 
         {/* Railway track representation */}
         <Circle
-          center={[11.6025, 79.8083]}
+          center={[11.6025, 79.8083] as [number, number]}
           pathOptions={{ 
             color: '#a3a3a3',
             fillColor: '#a3a3a3',
@@ -106,7 +109,7 @@ const OpenStreetMap = () => {
         {elephantData.map((elephant) => (
           <Marker
             key={elephant.id}
-            position={elephant.position as [number, number]}
+            position={elephant.position}
             icon={elephant.risk === "high" ? alertIcon : elephantIcon}
           >
             <Popup>
