@@ -78,8 +78,8 @@ const OpenStreetMap = () => {
   return (
     <div className="relative h-[600px] overflow-hidden rounded-xl border border-elephant-200 dark:border-elephant-800 shadow-card">
       <MapContainer
-        whenReady={(map) => {
-          mapRef.current = map.target;
+        whenCreated={(map) => {
+          mapRef.current = map;
         }}
         center={[11.6025, 79.8083]}
         zoom={12}
