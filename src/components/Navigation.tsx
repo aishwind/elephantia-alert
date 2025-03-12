@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Menu, X, MapPin, Bell, Info, LayoutDashboard } from "lucide-react";
+import { Menu, X, MapPin, Bell, Info, LayoutDashboard, Bot } from "lucide-react";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,6 +30,7 @@ const Navigation = () => {
   const navigationItems = [
     { name: "Home", path: "/", icon: <MapPin className="h-4 w-4" /> },
     { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard className="h-4 w-4" /> },
+    { name: "Elli", path: "/elli", icon: <Bot className="h-4 w-4" /> },
     { name: "Alerts", path: "/alerts", icon: <Bell className="h-4 w-4" /> },
     { name: "About", path: "/about", icon: <Info className="h-4 w-4" /> },
   ];
