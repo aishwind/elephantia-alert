@@ -76,26 +76,26 @@ const OpenStreetMap = () => {
     }
   };
 
-  // Get map reference when it's created
-  const handleMapCreated = (map: L.Map) => {
-    mapRef.current = map;
-  };
-
   return (
     <div className="relative h-[600px] overflow-hidden rounded-xl border border-elephant-200 dark:border-elephant-800 shadow-card">
       <MapContainer
-        center={[11.6025, 79.8083] as [number, number]}
+        // Use the center and zoom props properly within MapContainer
+        center={elephantData[0].position}
         zoom={12}
         style={{ height: "100%", width: "100%" }}
-        ref={mapRef}
+        whenReady={(e) => {
+          mapRef.current = e.target;
+        }}
       >
         <TileLayer
+          // Use the correct typing for TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
         {/* Railway track representation */}
         <Circle
+          // Fix Circle props
           center={[11.6025, 79.8083] as [number, number]}
           pathOptions={{ 
             color: '#a3a3a3',
@@ -110,6 +110,7 @@ const OpenStreetMap = () => {
           <Marker
             key={elephant.id}
             position={elephant.position}
+            // Use the correct typing for icon
             icon={elephant.risk === "high" ? alertIcon : elephantIcon}
           >
             <Popup>
