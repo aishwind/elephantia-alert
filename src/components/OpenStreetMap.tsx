@@ -1,8 +1,7 @@
-
 import React, { useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from "react-leaflet";
 
 // Custom marker icons for elephants
 const elephantIcon = new L.Icon({
@@ -79,10 +78,10 @@ const OpenStreetMap = () => {
   return (
     <div className="relative h-[600px] overflow-hidden rounded-xl border border-elephant-200 dark:border-elephant-800 shadow-card">
       <MapContainer
-        ref={(mapInstance: L.Map) => {
-          mapRef.current = mapInstance;
+        whenReady={(map) => {
+          mapRef.current = map.target;
         }}
-        center={elephantData[0].position}
+        center={[11.6025, 79.8083]}
         zoom={12}
         style={{ height: "100%", width: "100%" }}
       >
@@ -93,7 +92,7 @@ const OpenStreetMap = () => {
 
         {/* Railway track representation */}
         <Circle
-          center={[11.6025, 79.8083] as [number, number]}
+          center={[11.6025, 79.8083]}
           pathOptions={{ 
             color: '#a3a3a3',
             fillColor: '#a3a3a3',
@@ -143,8 +142,6 @@ const OpenStreetMap = () => {
             </Popup>
           </Marker>
         ))}
-
-        {/* Map Legend will be added as an overlay component */}
       </MapContainer>
 
       {/* Map Legend Overlay */}
