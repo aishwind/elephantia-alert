@@ -32,10 +32,10 @@ const Hero = () => {
       });
     };
 
-    container.current.addEventListener('mousemove', handleMouseMove);
+    containerRef.current.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      container.current?.removeEventListener('mousemove', handleMouseMove);
+      containerRef.current?.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
