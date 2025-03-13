@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Transition from "@/components/Transition";
@@ -9,10 +8,16 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mic, Send, Pause, Play, Volume2, Bot } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { sendMessageToGemini } from "@/utils/geminiApi";
+import { ChatGeminiAI, ChatMessage } from "@/utils/geminiApi";
+
+// Initialize the Gemini AI client
+const geminiAI = new ChatGeminiAI({
+  temperature: 0.7,
+  maxOutputTokens: 800
+});
 
 const Elli = () => {
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
       content: "Hello! I'm Elli, your conservation assistant. How can I help you learn about elephants today?"
@@ -40,21 +45,18 @@ const Elli = () => {
     if (!input.trim()) return;
 
     // Add user message
-    const userMessage = { role: "user", content: input };
+    const userMessage: ChatMessage = { role: "user", content: input };
     setMessages(prev => [...prev, userMessage]);
     setInput("");
     setIsTyping(true);
     setIsLoadingResponse(true);
 
     try {
-      // Convert messages to format needed for API (exclude the first greeting)
-      const chatHistory = messages.slice(1).map(msg => ({
-        role: msg.role,
-        content: msg.content
-      }));
-
-      // Call Gemini API
-      const response = await sendMessageToGemini(input, chatHistory);
+      // Call Gemini API using the new class approach
+      const response = await geminiAI.invoke([
+        ...messages.slice(1), // Skip the initial greeting
+        userMessage
+      ]);
       
       // Add assistant response
       setMessages(prev => [...prev, { role: "assistant", content: response }]);
