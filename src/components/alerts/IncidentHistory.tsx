@@ -4,7 +4,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { History, Download, Filter, ChevronDown, ChevronUp, Calendar, Map as MapIcon, AlertTriangle } from "lucide-react";
+import { History, Download, Filter, ChevronDown, ChevronUp, Calendar, Map, AlertTriangle } from "lucide-react";
+import { Card } from "@/components/ui/card";
 
 interface IncidentHistoryProps {
   className?: string;
@@ -122,7 +123,7 @@ const IncidentHistory: React.FC<IncidentHistoryProps> = ({ className }) => {
                         <Calendar className="h-3 w-3 mr-1" />
                         {incident.date}
                         <span className="mx-1.5">•</span>
-                        <MapIcon className="h-3 w-3 mr-1" />
+                        <Map className="h-3 w-3 mr-1" />
                         {incident.location}
                       </div>
                     </div>
@@ -180,22 +181,33 @@ const IncidentHistory: React.FC<IncidentHistoryProps> = ({ className }) => {
               Elephant Incident Trends
             </h4>
             
-            {/* Simple bar chart visualization */}
+            {/* Bar chart visualization */}
             <div className="h-40 flex items-end justify-between gap-1 mb-4">
-              {trends.map((item) => (
-                <div key={item.month} className="flex flex-col items-center flex-1">
-                  <div 
-                    className="w-full bg-elephant-400 dark:bg-elephant-600 rounded-t"
-                    style={{ height: `${(item.incidents / 15) * 100}%` }}
-                  ></div>
-                  <div className="text-xs mt-1 text-elephant-600 dark:text-elephant-400">
-                    {item.month}
+              {trends.map((item) => {
+                // Calculate height percentage (based on max value in data)
+                const maxIncidents = Math.max(...trends.map(t => t.incidents));
+                const heightPercentage = (item.incidents / maxIncidents) * 100;
+                
+                return (
+                  <div key={item.month} className="flex flex-col items-center flex-1">
+                    <div className="w-full relative flex flex-col items-center">
+                      <div
+                        className="w-full bg-elephant-400 dark:bg-elephant-600 rounded-t"
+                        style={{ height: `${heightPercentage}%` }}
+                      ></div>
+                      <div className="absolute bottom-[-20px] text-xs text-elephant-600 dark:text-elephant-400">
+                        {item.month}
+                      </div>
+                      <div className="absolute top-[-20px] text-xs text-elephant-600 dark:text-elephant-400">
+                        {item.incidents}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             
-            <div className="bg-elephant-50 dark:bg-elephant-900/50 rounded-lg p-3 text-xs text-elephant-700 dark:text-elephant-300">
+            <Card className="mt-8 p-3 text-xs text-elephant-700 dark:text-elephant-300">
               <div className="flex items-center mb-2">
                 <AlertTriangle className="h-3 w-3 text-elephant-600 dark:text-elephant-400 mr-1" />
                 <h5 className="font-medium">Key Insights:</h5>
@@ -206,7 +218,7 @@ const IncidentHistory: React.FC<IncidentHistoryProps> = ({ className }) => {
                 <li>False alerts have decreased by 30% since sensor calibration</li>
                 <li>Recurring hotspot: Rajaji National Park Section B</li>
               </ul>
-            </div>
+            </Card>
           </div>
         </TabsContent>
       </Tabs>
