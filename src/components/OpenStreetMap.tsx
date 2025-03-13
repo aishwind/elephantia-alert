@@ -1,8 +1,8 @@
 
 import React, { useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from "react-leaflet";
 
 // Custom marker icons for elephants
 const elephantIcon = new L.Icon({
@@ -53,15 +53,21 @@ const elephantData = [
   },
 ];
 
-const OpenStreetMap = () => {
+// Component to handle map reference
+function MapController() {
   const mapRef = useRef<L.Map | null>(null);
-
+  const map = useMap();
+  
   useEffect(() => {
-    if (mapRef.current) {
-      // Initial map setup if needed
+    if (map) {
+      mapRef.current = map;
     }
-  }, []);
+  }, [map]);
+  
+  return null;
+}
 
+const OpenStreetMap = () => {
   // Risk level color mapping
   const getRiskColor = (risk: string) => {
     switch (risk) {
@@ -79,24 +85,20 @@ const OpenStreetMap = () => {
   return (
     <div className="relative h-[600px] overflow-hidden rounded-xl border border-elephant-200 dark:border-elephant-800 shadow-card">
       <MapContainer
-        // Use the center and zoom props properly within MapContainer
-        center={elephantData[0].position}
+        center={[11.6025, 79.8083] as L.LatLngExpression}
         zoom={12}
         style={{ height: "100%", width: "100%" }}
-        whenReady={(e) => {
-          mapRef.current = e.target;
-        }}
       >
+        <MapController />
+        
         <TileLayer
-          // Use the correct typing for TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
         {/* Railway track representation */}
         <Circle
-          // Fix Circle props
-          center={[11.6025, 79.8083] as [number, number]}
+          center={[11.6025, 79.8083] as L.LatLngExpression}
           pathOptions={{ 
             color: '#a3a3a3',
             fillColor: '#a3a3a3',
@@ -109,8 +111,7 @@ const OpenStreetMap = () => {
         {elephantData.map((elephant) => (
           <Marker
             key={elephant.id}
-            position={elephant.position}
-            // Use the correct typing for icon
+            position={elephant.position as L.LatLngExpression}
             icon={elephant.risk === "high" ? alertIcon : elephantIcon}
           >
             <Popup>
@@ -147,8 +148,6 @@ const OpenStreetMap = () => {
             </Popup>
           </Marker>
         ))}
-
-        {/* Map Legend will be added as an overlay component */}
       </MapContainer>
 
       {/* Map Legend Overlay */}
