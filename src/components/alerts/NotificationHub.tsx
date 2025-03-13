@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MessageSquare, Send, PhoneOutgoing, Bot, Bell, Users, RefreshCw } from "lucide-react";
+import { MessageSquare, Send, PhoneOutgoing, Bot, Bell, Users, RefreshCw, Train } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 

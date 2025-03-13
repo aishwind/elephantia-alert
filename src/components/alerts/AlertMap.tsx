@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, MapPin, Info, Layers, Plus, Minus, Navigation, Train, Map } from "lucide-react";
-import Map from "@/components/Map";
+import { AlertTriangle, MapPin, Info, Layers, Plus, Minus, Navigation, Train } from "lucide-react";
+import MapComponent from "@/components/Map";
 
 interface AlertMapProps {
   className?: string;
@@ -32,7 +32,7 @@ const AlertMap: React.FC<AlertMapProps> = ({ className }) => {
     <div className={cn("rounded-xl border border-elephant-200 dark:border-elephant-800 shadow-card overflow-hidden flex flex-col", className)}>
       <div className="bg-white dark:bg-elephant-900 px-4 py-3 border-b border-elephant-200 dark:border-elephant-800 flex justify-between items-center">
         <h3 className="font-semibold text-elephant-900 dark:text-white flex items-center gap-2">
-          <Map className="h-4 w-4 text-elephant-500" />
+          <MapPin className="h-4 w-4 text-elephant-500" />
           Live Tracking Map
         </h3>
         <Button variant="outline" size="sm" className="flex items-center gap-1">
@@ -43,7 +43,7 @@ const AlertMap: React.FC<AlertMapProps> = ({ className }) => {
       
       {/* Map */}
       <div className="flex-1 relative min-h-[300px]">
-        <Map />
+        <MapComponent />
         
         {/* Alert indicators - these would be positioned by the Map component in real-world */}
         <div className="absolute left-[45%] top-[30%] z-10">
