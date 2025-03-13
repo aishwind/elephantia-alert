@@ -50,15 +50,10 @@ export const sendMessageToGemini = async (
   chatHistory: Array<{ role: string; content: string }> = []
 ): Promise<string> => {
   try {
-    // Prepare the prompt with system instructions and conversation history
-    const systemMessage = { role: "user", content: ELLI_SYSTEM_PROMPT };
-    
-    // Format the messages for Gemini API - Gemini doesn't support "system" role
-    // so we need to attach the system prompt as a user message first
+    // Format the request body according to Gemini API specifications
     const requestBody = {
       contents: [
         {
-          role: "user",
           parts: [{ text: ELLI_SYSTEM_PROMPT }]
         },
         ...chatHistory.slice(-10).map(msg => ({

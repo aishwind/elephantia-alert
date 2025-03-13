@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Transition from "@/components/Transition";
@@ -46,8 +47,8 @@ const Elli = () => {
     setIsLoadingResponse(true);
 
     try {
-      // Convert messages to format needed for API
-      const chatHistory = messages.map(msg => ({
+      // Convert messages to format needed for API (exclude the first greeting)
+      const chatHistory = messages.slice(1).map(msg => ({
         role: msg.role,
         content: msg.content
       }));
