@@ -6,7 +6,7 @@ import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from "react-le
 
 // Custom marker icons for elephants
 const elephantIcon = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/2395/2395796.png",
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/3065/3065702.png",
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
@@ -27,7 +27,7 @@ const elephantData = [
     type: "Group",
     count: 5,
     status: "moving",
-    position: [11.6025, 79.8083] as [number, number], // [lat, lng]
+    position: [10.9046, 76.9558] as [number, number], // [lat, lng]
     risk: "low",
     lastUpdated: "2 min ago",
   },
@@ -37,7 +37,7 @@ const elephantData = [
     type: "Individual",
     count: 1,
     status: "stationary",
-    position: [11.5825, 79.8283] as [number, number],
+    position: [10.9700, 77.0300] as [number, number],
     risk: "medium",
     lastUpdated: "Just now",
   },
@@ -47,7 +47,7 @@ const elephantData = [
     type: "Group",
     count: 8,
     status: "approaching",
-    position: [11.6225, 79.7883] as [number, number],
+    position: [10.9046, 76.8558] as [number, number],
     risk: "high",
     lastUpdated: "5 min ago",
   },
@@ -98,7 +98,7 @@ const OpenStreetMap = () => {
 
         {/* Railway track representation */}
         <Circle
-          center={[11.6025, 79.8083] as L.LatLngExpression}
+          center={[10.9046, 76.9558] as L.LatLngExpression}
           pathOptions={{ 
             color: '#a3a3a3',
             fillColor: '#a3a3a3',
