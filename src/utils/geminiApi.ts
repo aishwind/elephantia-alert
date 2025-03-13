@@ -1,7 +1,7 @@
 
 // Gemini API configuration
 const API_KEY = "AIzaSyBgXMg8li6jbBdN1dorXBSDLnf76IeJ-eM";
-const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
+const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
 // System prompt that defines Elli's character and knowledge base
 export const ELLI_SYSTEM_PROMPT = `
@@ -56,7 +56,7 @@ export class ChatGeminiAI {
   private apiUrl: string;
 
   constructor({
-    model = "gemini-pro",
+    model = "gemini-2.0-flash",
     temperature = 0.7,
     maxOutputTokens = 800,
     apiKey = API_KEY,

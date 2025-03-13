@@ -139,7 +139,7 @@ const Hero = () => {
                 >
                   <Play className="w-8 h-8 text-white fill-current" />
                 </button>
-                <p className="text-sm">Interactive Demo Video</p>
+                
               </div>
             </div>
           </div>
