@@ -26,15 +26,16 @@ const Navigation = () => {
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
-
+  const iconUrl = "https://raw.githubusercontent.com/migavel508/elephant_tracking/main/logo_1.png";
   const navigationItems = [
-    { name: "Home", path: "/", icon: <MapPin className="h-4 w-4" /> },
+    { name: "Home", path: "/", icon: <img src={iconUrl} alt="Elephant Icon" className="h-6 w-6" /> },
     { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard className="h-4 w-4" /> },
     { name: "Elli", path: "/elli", icon: <Bot className="h-4 w-4" /> },
     { name: "Alerts", path: "/alerts", icon: <Bell className="h-4 w-4" /> },
     { name: "Tuker Trust", path: "/tuker-trust", icon: <Shield className="h-4 w-4" /> },
     { name: "About", path: "/about", icon: <Info className="h-4 w-4" /> },
   ];
+  
 
   return (
     <nav
@@ -48,10 +49,9 @@ const Navigation = () => {
       <div className="section-container">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
-            <span className="h-8 w-8 bg-elephant-500 rounded-lg flex items-center justify-center">
-              
-              <MapPin className="h-4 w-4 text-white" />
-            </span>
+          <span className="h-8 w-8 bg-elephant-500 rounded-lg flex items-center justify-center">
+      <img src={iconUrl} alt="Elephant Icon" className="h-6 w-6" />
+    </span>
             <span className="font-display font-semibold text-lg text-elephant-900 dark:text-white">
               Tusk<span className="text-elephant-500">Patrons</span>
             </span>

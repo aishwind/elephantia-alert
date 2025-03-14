@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Mail, Phone, Github, Twitter, Linkedin } from "lucide-react";
-
+const iconUrl = "https://raw.githubusercontent.com/migavel508/elephant_tracking/main/logo_1.png";
 const Footer = () => {
   return (
     <footer className="bg-white dark:bg-elephant-950 border-t border-elephant-200 dark:border-elephant-800">
@@ -11,10 +11,11 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center space-x-2 mb-4">
               <span className="h-8 w-8 bg-elephant-500 rounded-lg flex items-center justify-center">
-                <MapPin className="h-4 w-4 text-white" />
+                
+                <img src={iconUrl} alt="Elephant Icon" className="h-6 w-6" />
               </span>
               <span className="font-display font-semibold text-lg text-elephant-900 dark:text-white">
-                Elephantia<span className="text-elephant-500">Alert</span>
+                Tusk<span className="text-elephant-500">Patrons</span>
               </span>
             </Link>
             
@@ -79,9 +80,10 @@ const Footer = () => {
             <h3 className="font-semibold text-elephant-900 dark:text-white mb-4">Contact Us</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
-                <MapPin className="h-5 w-5 mr-2 text-elephant-500 mt-0.5" />
+               
+                <img src={iconUrl} alt="Elephant Icon" className="h-6 w-6" />
                 <span className="text-elephant-600 dark:text-elephant-300">
-                  Wildlife Conservation Center, Dehradun, Uttarakhand, India
+                  Tusk Patrons, KGiSL, Coimbatore, Tamil Nadu
                 </span>
               </li>
               <li className="flex items-center">
