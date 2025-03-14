@@ -48,10 +48,11 @@ const Navigation = () => {
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
             <span className="h-8 w-8 bg-elephant-500 rounded-lg flex items-center justify-center">
+              
               <MapPin className="h-4 w-4 text-white" />
             </span>
             <span className="font-display font-semibold text-lg text-elephant-900 dark:text-white">
-              Elephantia<span className="text-elephant-500">Alert</span>
+              Tusk<span className="text-elephant-500">Patrons</span>
             </span>
           </Link>
 

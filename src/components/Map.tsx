@@ -12,7 +12,7 @@ const elephantData = [
     count: 5,
     status: "moving",
     position: { top: "30%", left: "45%" },
-    risk: "low",
+    risk: "high",
     lastUpdated: "2 min ago",
   },
   {
@@ -32,7 +32,7 @@ const elephantData = [
     count: 8,
     status: "approaching",
     position: { top: "45%", left: "25%" },
-    risk: "high",
+    risk: "low",
     lastUpdated: "5 min ago",
   },
 ];

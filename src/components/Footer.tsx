@@ -86,8 +86,8 @@ const Footer = () => {
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 mr-2 text-elephant-500" />
-                <a href="mailto:info@elephantiaalert.org" className="text-elephant-600 dark:text-elephant-300 hover:text-elephant-500 transition-colors">
-                  info@elephantiaalert.org
+                <a href="mailto:info@tuskpatrons.org" className="text-elephant-600 dark:text-elephant-300 hover:text-elephant-500 transition-colors">
+                  info@tuskpatrons.org
                 </a>
               </li>
               <li className="flex items-center">
@@ -102,7 +102,7 @@ const Footer = () => {
         
         <div className="mt-12 pt-6 border-t border-elephant-200 dark:border-elephant-800 flex flex-col md:flex-row justify-between items-center">
           <p className="text-elephant-500 text-sm mb-4 md:mb-0">
-            © 2023 ElephantiaAlert. All rights reserved.
+            © 2025 TuskPatrons. All rights reserved.
           </p>
           
           <div className="flex items-center space-x-4 text-sm text-elephant-500">
