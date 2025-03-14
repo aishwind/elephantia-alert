@@ -10,13 +10,14 @@ import ElephantTracking from "@/components/tukertrust/ElephantTracking";
 import CommunityEngagement from "@/components/tukertrust/CommunityEngagement";
 import DataAnalytics from "@/components/tukertrust/DataAnalytics";
 import SystemIntegrations from "@/components/tukertrust/SystemIntegrations";
+import RoleDashboard from "@/components/tukertrust/RoleDashboard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // User role types
 type UserRole = "admin" | "ranger" | "farmer" | "community_leader" | "government" | "insurance";
 
 const TukerTrust = () => {
-  const [activeTab, setActiveTab] = useState<string>("incidents");
+  const [activeTab, setActiveTab] = useState<string>("dashboard");
   const [userRole, setUserRole] = useState<UserRole>("admin");
 
   return (
@@ -45,18 +46,23 @@ const TukerTrust = () => {
               
               <div className="flex-1">
                 <Tabs 
-                  defaultValue="incidents" 
+                  defaultValue="dashboard" 
                   value={activeTab}
                   onValueChange={setActiveTab}
                   className="w-full"
                 >
                   <TabsList className="mb-6 w-full justify-start overflow-x-auto">
+                    <TabsTrigger value="dashboard">Role Dashboard</TabsTrigger>
                     <TabsTrigger value="incidents">Incident Management</TabsTrigger>
                     <TabsTrigger value="tracking">Elephant Tracking</TabsTrigger>
                     <TabsTrigger value="community">Community Engagement</TabsTrigger>
                     <TabsTrigger value="analytics">Data Analytics</TabsTrigger>
                     <TabsTrigger value="system">System Integrations</TabsTrigger>
                   </TabsList>
+                  
+                  <TabsContent value="dashboard">
+                    <RoleDashboard userRole={userRole} />
+                  </TabsContent>
                   
                   <TabsContent value="incidents">
                     <IncidentManagement userRole={userRole} />
