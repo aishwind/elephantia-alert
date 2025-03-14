@@ -19,8 +19,8 @@ const ChatContainer: React.FC<ChatContainerProps> = ({
   onSendMessage
 }) => {
   return (
-    <Card className="h-[600px] flex flex-col">
-      <CardContent className="flex-1 flex flex-col p-0">
+    <Card className="h-[600px] flex flex-col overflow-hidden">
+      <CardContent className="flex-1 flex flex-col p-0 h-full">
         <ChatUI 
           messages={messages} 
           isTyping={isTyping} 

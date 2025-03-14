@@ -1,7 +1,6 @@
 
 import React, { useRef, useEffect } from "react";
 import { ChatMessage } from "@/utils/geminiApi";
-import { Card, CardContent } from "@/components/ui/card";
 import { AlertTriangle } from "lucide-react";
 
 interface ChatUIProps {
@@ -24,7 +23,7 @@ const ChatUI: React.FC<ChatUIProps> = ({ messages, isTyping, isLoadingResponse }
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto p-4">
+    <div className="flex-1 overflow-y-auto p-4 h-[calc(100%-70px)]">
       {messages.map((message, index) => (
         <div
           key={index}
@@ -33,13 +32,13 @@ const ChatUI: React.FC<ChatUIProps> = ({ messages, isTyping, isLoadingResponse }
           }`}
         >
           <div
-            className={`max-w-[80%] rounded-lg px-4 py-2 ${
+            className={`max-w-[80%] rounded-lg px-4 py-2 break-words ${
               message.role === "user"
                 ? "bg-elephant-600 text-white"
                 : "bg-elephant-100 dark:bg-elephant-800 text-elephant-900 dark:text-white"
             }`}
           >
-            <p>{message.content}</p>
+            <p className="whitespace-pre-wrap">{message.content}</p>
           </div>
         </div>
       ))}

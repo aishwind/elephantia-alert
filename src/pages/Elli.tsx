@@ -20,10 +20,10 @@ const Elli = () => {
 
   return (
     <Transition>
-      <div className="min-h-screen">
+      <div className="min-h-screen flex flex-col">
         <Navigation />
         
-        <main className="pt-24 pb-16">
+        <main className="flex-1 pt-24 pb-16">
           <div className="section-container">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
