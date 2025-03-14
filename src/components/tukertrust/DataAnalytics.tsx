@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -15,18 +14,18 @@ interface DataAnalyticsProps {
 
 // Mock data for the incident trends chart
 const incidentTrendsData = [
-  { month: "Jan", incidents: 12, compensation: 3200 },
-  { month: "Feb", incidents: 15, compensation: 4100 },
-  { month: "Mar", incidents: 18, compensation: 5300 },
-  { month: "Apr", incidents: 22, compensation: 6100 },
-  { month: "May", incidents: 28, compensation: 7800 },
-  { month: "Jun", incidents: 20, compensation: 5900 },
-  { month: "Jul", incidents: 24, compensation: 6500 },
-  { month: "Aug", incidents: 30, compensation: 8200 },
-  { month: "Sep", incidents: 25, compensation: 7100 },
-  { month: "Oct", incidents: 20, compensation: 5800 },
-  { month: "Nov", incidents: 18, compensation: 5200 },
-  { month: "Dec", incidents: 14, compensation: 4300 },
+  { month: "Jan", incidents: 12, compensation: 238000 },
+  { month: "Feb", incidents: 15, compensation: 305000 },
+  { month: "Mar", incidents: 18, compensation: 394000 },
+  { month: "Apr", incidents: 22, compensation: 453000 },
+  { month: "May", incidents: 28, compensation: 580000 },
+  { month: "Jun", incidents: 20, compensation: 438000 },
+  { month: "Jul", incidents: 24, compensation: 483000 },
+  { month: "Aug", incidents: 30, compensation: 609000 },
+  { month: "Sep", incidents: 25, compensation: 528000 },
+  { month: "Oct", incidents: 20, compensation: 431000 },
+  { month: "Nov", incidents: 18, compensation: 386000 },
+  { month: "Dec", incidents: 14, compensation: 320000 },
 ];
 
 // Mock data for compensation distribution
@@ -127,7 +126,12 @@ const DataAnalytics: React.FC<DataAnalyticsProps> = ({ userRole }) => {
                           <XAxis dataKey="month" />
                           <YAxis yAxisId="left" />
                           <YAxis yAxisId="right" orientation="right" />
-                          <Tooltip />
+                          <Tooltip formatter={(value, name) => {
+                          if (name === "Compensation (₹)") {
+                            return [`₹${value.toLocaleString('en-IN')}`, name];
+                          }
+                          return [value, name];
+                        }} />
                           <Legend />
                           <Line
                             yAxisId="left"
@@ -142,7 +146,7 @@ const DataAnalytics: React.FC<DataAnalyticsProps> = ({ userRole }) => {
                             yAxisId="right" 
                             type="monotone" 
                             dataKey="compensation" 
-                            name="Compensation ($)" 
+                            name="Compensation (₹)" 
                             stroke="#82ca9d" 
                             strokeWidth={2}
                           />
@@ -233,7 +237,7 @@ const DataAnalytics: React.FC<DataAnalyticsProps> = ({ userRole }) => {
                           <CardTitle className="text-base">Total Compensation</CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="text-3xl font-semibold">$64,500</div>
+                          <div className="text-3xl font-semibold">₹47,95,000</div>
                           <div className="flex items-center text-sm">
                             <span className="text-green-600 dark:text-green-500 font-medium">+15%</span>
                             <span className="text-muted-foreground ml-1">from last year</span>
@@ -245,7 +249,7 @@ const DataAnalytics: React.FC<DataAnalyticsProps> = ({ userRole }) => {
                           <CardTitle className="text-base">Average Payout</CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="text-3xl font-semibold">$875</div>
+                          <div className="text-3xl font-semibold">₹65,000</div>
                           <div className="flex items-center text-sm">
                             <span className="text-green-600 dark:text-green-500 font-medium">+5%</span>
                             <span className="text-muted-foreground ml-1">from last year</span>

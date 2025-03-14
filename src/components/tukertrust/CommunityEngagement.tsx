@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -26,7 +25,7 @@ const communityLeaders = [
     contributions: 32, 
     rank: 1, 
     avatar: "M",
-    rewards: "$250"
+    rewards: "₹18,500"
   },
   { 
     id: 2, 
@@ -37,7 +36,7 @@ const communityLeaders = [
     contributions: 28, 
     rank: 2, 
     avatar: "J",
-    rewards: "$175"
+    rewards: "₹13,000"
   },
   { 
     id: 3, 
@@ -48,7 +47,7 @@ const communityLeaders = [
     contributions: 25, 
     rank: 3, 
     avatar: "S",
-    rewards: "$150"
+    rewards: "₹11,200"
   },
   { 
     id: 4, 
@@ -59,7 +58,7 @@ const communityLeaders = [
     contributions: 24, 
     rank: 4, 
     avatar: "D",
-    rewards: "$125"
+    rewards: "₹9,300"
   },
   { 
     id: 5, 
@@ -70,7 +69,7 @@ const communityLeaders = [
     contributions: 22, 
     rank: 5, 
     avatar: "E",
-    rewards: "$100"
+    rewards: "₹7,500"
   },
 ];
 
@@ -229,7 +228,7 @@ const CommunityEngagement: React.FC<CommunityEngagementProps> = ({ userRole }) =
                       <CardTitle className="text-base">Rewards Distributed</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-semibold">$2,450</div>
+                      <div className="text-3xl font-semibold">₹2,450</div>
                       <div className="flex items-center text-sm">
                         <span className="text-green-600 dark:text-green-500 font-medium">+20%</span>
                         <span className="text-muted-foreground ml-1">from last month</span>
@@ -275,7 +274,7 @@ const CommunityEngagement: React.FC<CommunityEngagementProps> = ({ userRole }) =
                       <CardTitle className="text-base">Available Rewards</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-semibold">$5,250</div>
+                      <div className="text-3xl font-semibold">₹3,90,000</div>
                       <p className="text-sm text-muted-foreground">Current reward pool</p>
                     </CardContent>
                   </Card>
@@ -284,7 +283,7 @@ const CommunityEngagement: React.FC<CommunityEngagementProps> = ({ userRole }) =
                       <CardTitle className="text-base">Pending Rewards</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-semibold">$1,735</div>
+                      <div className="text-3xl font-semibold">₹1,29,000</div>
                       <p className="text-sm text-muted-foreground">Awaiting distribution</p>
                     </CardContent>
                   </Card>
@@ -293,7 +292,7 @@ const CommunityEngagement: React.FC<CommunityEngagementProps> = ({ userRole }) =
                       <CardTitle className="text-base">Top Reward</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-semibold">$250</div>
+                      <div className="text-3xl font-semibold">₹18,500</div>
                       <p className="text-sm text-muted-foreground">Current top earner</p>
                     </CardContent>
                   </Card>

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,7 +23,7 @@ const incidentData = [
     reporter: "John Mbeki",
     severity: "high",
     status: "pending",
-    compensation: "$1,200",
+    compensation: "₹89,000",
     aiScore: 89,
   },
   {
@@ -34,7 +33,7 @@ const incidentData = [
     reporter: "Sarah Wanjiku",
     severity: "medium",
     status: "approved",
-    compensation: "$800",
+    compensation: "₹59,500",
     aiScore: 92,
   },
   {
@@ -44,7 +43,7 @@ const incidentData = [
     reporter: "Daniel Kipchoge",
     severity: "low",
     status: "rejected",
-    compensation: "$300",
+    compensation: "₹22,300",
     aiScore: 45,
   },
   {
@@ -54,7 +53,7 @@ const incidentData = [
     reporter: "Elizabeth Auma",
     severity: "high",
     status: "pending",
-    compensation: "$1,500",
+    compensation: "₹1,11,500",
     aiScore: 85,
   },
   {
@@ -64,7 +63,7 @@ const incidentData = [
     reporter: "Michael Lekishon",
     severity: "medium",
     status: "approved",
-    compensation: "$950",
+    compensation: "₹70,600",
     aiScore: 91,
   },
 ];
@@ -287,7 +286,7 @@ const IncidentManagement: React.FC<IncidentManagementProps> = ({ userRole }) => 
                       </div>
                       <div className="grid grid-cols-3 gap-4">
                         <div className="font-medium">Est. Value:</div>
-                        <div className="col-span-2">$1,200 USD</div>
+                        <div className="col-span-2">₹89,000</div>
                       </div>
                       <div className="grid grid-cols-3 gap-4">
                         <div className="font-medium">Verified By:</div>
@@ -346,7 +345,7 @@ const IncidentManagement: React.FC<IncidentManagementProps> = ({ userRole }) => 
                     <div className="space-y-4">
                       <div className="flex flex-col md:flex-row items-start md:items-center md:justify-between">
                         <div>
-                          <p className="font-medium">Requested Amount: $1,200 USD</p>
+                          <p className="font-medium">Requested Amount: ₹89,000</p>
                           <p className="text-sm text-muted-foreground">Based on market value of damaged crops</p>
                         </div>
                         <div className="flex gap-3 mt-3 md:mt-0">
