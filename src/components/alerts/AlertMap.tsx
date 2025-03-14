@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, MapPin, Info, Layers, Plus, Minus, Navigation, Train } from "lucide-react";
+import { AlertTriangle, MapPin, Info, Layers, Plus, Minus, Navigation, Train, RefreshCw } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import PredictionOverlay from "./PredictionOverlay";
+import { useElephantPrediction } from "@/hooks/useElephantPrediction";
 
 // Fix for default Leaflet markers not showing properly
 // You would need to import these marker icons in your project
@@ -123,6 +125,18 @@ const AlertMap: React.FC<AlertMapProps> = ({ className }) => {
     rangers: true,
   });
   
+  const { 
+    predictionZones, 
+    possibleLocations, 
+    generatePredictions,
+    isLoading 
+  } = useElephantPrediction();
+  
+  // Generate predictions on initial load
+  useEffect(() => {
+    generatePredictions();
+  }, []);
+  
   const toggleLayer = (layer: string) => {
     setActiveLayers({
       ...activeLayers,
@@ -132,11 +146,11 @@ const AlertMap: React.FC<AlertMapProps> = ({ className }) => {
 
   // Simulated locations for the map markers (replace with real data in production)
   const locations = {
-    center: [8.5241, 80.3707] as [number, number], // Center of Sri Lanka (example)
-    alert: [8.5541, 80.4007] as [number, number],
-    warning: [8.4941, 80.3407] as [number, number],
-    elephant: [8.5941, 80.3907] as [number, number],
-    train: [8.6241, 80.3507] as [number, number]
+    center: [10.9129, 76.9416] as [number, number], // Madukkarai, Tamil Nadu
+    alert: [10.9541, 76.9407] as [number, number],
+    warning: [10.8941, 76.9307] as [number, number],
+    elephant: [10.9341, 76.9507] as [number, number],
+    train: [11.0241, 76.9707] as [number, number]
   };
 
   // Handle "My Location" button click
@@ -146,20 +160,36 @@ const AlertMap: React.FC<AlertMapProps> = ({ className }) => {
 
   return (
     <div className={cn("rounded-xl border border-elephant-200 dark:border-elephant-800 shadow-card overflow-hidden flex flex-col", className)}>
-      <div className="bg-white dark:bg-elephant-900 px-4 py-3 border-b border-elephant-200 dark:border-elephant-800 flex justify-between items-center">
-        <h3 className="font-semibold text-elephant-900 dark:text-white flex items-center gap-2">
-          <MapPin className="h-4 w-4 text-elephant-500" />
-          Live Tracking Map
+      <div className="bg-gradient-to-r from-elephant-600 to-nature-600 dark:from-elephant-900 dark:to-nature-900 px-4 py-3 border-b border-elephant-200 dark:border-elephant-800 flex justify-between items-center">
+        <h3 className="font-semibold text-white flex items-center gap-2">
+          <MapPin className="h-4 w-4" />
+          AI-Powered Prediction Map
         </h3>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="flex items-center gap-1"
-          onClick={handleMyLocationClick}
-        >
-          <Navigation className="h-3 w-3" />
-          <span>My Location</span>
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex items-center gap-1 bg-white/10 hover:bg-white/20 text-white border-white/20"
+            onClick={() => generatePredictions()}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <RefreshCw className="h-3 w-3 animate-spin" />
+            ) : (
+              <RefreshCw className="h-3 w-3" />
+            )}
+            <span>Refresh</span>
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex items-center gap-1 bg-white/10 hover:bg-white/20 text-white border-white/20"
+            onClick={handleMyLocationClick}
+          >
+            <Navigation className="h-3 w-3" />
+            <span>My Location</span>
+          </Button>
+        </div>
       </div>
       
       {/* OpenStreetMap Map */}
@@ -190,11 +220,19 @@ const AlertMap: React.FC<AlertMapProps> = ({ className }) => {
             <TrainMarker position={locations.train} />
           )}
           
-          {/* Custom zoom controls (purely visual, functionality is through the map) */}
+          {/* Prediction Overlay - New Component */}
+          {activeLayers.predictions && (
+            <PredictionOverlay 
+              predictionZones={predictionZones}
+              possibleLocations={possibleLocations}
+            />
+          )}
+          
+          {/* Custom zoom controls */}
           <ZoomControl position="topright" />
         </MapContainer>
         
-        {/* Map layers control - outside MapContainer but styled to appear over the map */}
+        {/* Map layers control */}
         <div className="absolute bottom-4 right-4 glass-card bg-white/80 dark:bg-elephant-900/80 backdrop-blur-sm rounded-lg p-3 z-[1000]">
           <div className="flex items-center justify-between mb-2">
             <h4 className="text-xs font-medium text-elephant-700 dark:text-elephant-300">Map Layers</h4>
@@ -231,11 +269,15 @@ const AlertMap: React.FC<AlertMapProps> = ({ className }) => {
           <div className="flex flex-col space-y-1.5">
             <div className="flex items-center space-x-2">
               <div className="h-3 w-3 rounded-full bg-alert-500"></div>
-              <span className="text-xs">Critical Alert</span>
+              <span className="text-xs">Critical Risk</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="h-3 w-3 rounded-full bg-warning-500"></div>
-              <span className="text-xs">Warning</span>
+              <span className="text-xs">High Risk</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="h-3 w-3 rounded-full bg-success-500"></div>
+              <span className="text-xs">Medium Risk</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="h-3 w-3 rounded-full bg-nature-500"></div>

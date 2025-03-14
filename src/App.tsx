@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Elli from "./pages/Elli";
 import Alerts from "./pages/Alerts";
 import TukerTrust from "./pages/TukerTrust";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/elli" element={<Elli />} />
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/tuker-trust" element={<TukerTrust />} />
+            <Route path="/about" element={<About />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
