@@ -10,9 +10,9 @@ const ElephantBehaviorAnalysis = ({ elephantData }) => {
   
   // Interpret behavior score
   const getBehaviorInterpretation = (score) => {
-    if (score < 30) return { status: "Abnormal", color: "destructive" };
-    if (score < 70) return { status: "Attention Required", color: "warning" };
-    return { status: "Normal", color: "success" };
+    if (score < 30) return { status: "Abnormal", color: "destructive" as const };
+    if (score < 70) return { status: "Attention Required", color: "warning" as const };
+    return { status: "Normal", color: "success" as const };
   };
   
   const scoreInterpretation = getBehaviorInterpretation(behavior.normalityScore);
