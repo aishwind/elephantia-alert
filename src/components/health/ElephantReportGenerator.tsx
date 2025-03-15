@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FilePenLine, Send, Download, Check, Clock } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { Badge } from "@/components/ui/badge";
 
 const ElephantReportGenerator = ({ elephantData }) => {
   const [reportOptions, setReportOptions] = useState({
@@ -52,7 +53,7 @@ const ElephantReportGenerator = ({ elephantData }) => {
       toast({
         title: "Report Sent",
         description: "The report has been sent to Tamil Nadu Forest Department officials.",
-        variant: "success",
+        variant: "default",
       });
     }, 2000);
   };

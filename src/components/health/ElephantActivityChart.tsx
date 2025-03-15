@@ -38,7 +38,7 @@ const ElephantActivityChart = ({ elephantData }) => {
           <Tooltip 
             formatter={(value, name) => {
               if (name === "activityLevel") return [`${value}`, "Activity Level"];
-              if (name === "restPeriod" && value > 0) return ["Resting", "State"];
+              if (name === "restPeriod" && Number(value) > 0) return ["Resting", "State"];
               return [value, name];
             }}
           />
