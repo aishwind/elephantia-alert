@@ -544,6 +544,7 @@ const fenceBoundary: [number, number][] = [
 function MapController({ elephants, setElephants, onAlertTriggered }) {
   const map = useMap();
   const intervalRef = useRef(null);
+  const movementCountRef = useRef(0);
   
   // Check if a point is inside the fence polygon
   const isInsideFence = (position) => {
@@ -564,33 +565,51 @@ function MapController({ elephants, setElephants, onAlertTriggered }) {
     return inside;
   };
 
-  // Simulate random movement for elephants
+  // Simulate movement only for Bull 01 (id: 2) with more direct path to fence
   const moveElephants = () => {
+    movementCountRef.current += 1;
+    
     setElephants(prev =>
       prev.map(elephant => {
-        let [lat, lng] = elephant.position;
-  
-        // Updated center of the fence
-        const fenceCenter = [11.1016683, 76.9646575];
-  
-        // If outside, move slightly toward the fence center
-        if (!isInsideFence(elephant.position)) {
-          lat += (fenceCenter[0] - lat) * 0.05 + (Math.random() - 0.5) * 0.005;
-          lng += (fenceCenter[1] - lng) * 0.05 + (Math.random() - 0.5) * 0.005;
-        } else {
-          // If inside, normal random movement
-          lat += (Math.random() - 0.5) * 0.01;
-          lng += (Math.random() - 0.5) * 0.01;
+        // Only move Bull 01 (id: 2), keep others static
+        if (elephant.id !== 2) {
+          return {
+            ...elephant,
+            status: "stationary",
+            lastUpdated: "Just now"
+          };
         }
-  
+        
+        // Enhanced movement logic for Bull 01 to reach fence within 1:10-1:20 minutes
+        let [lat, lng] = elephant.position;
+        
+        // We want to reach the fence in about 15 movement steps (1:15 at 5 seconds per step)
+        // Calculate center of fence for target
+        const fenceCenter = [11.1016683, 76.9646575];
+        
+        // Calculate distance to fence
+        const distToCenter = Math.sqrt(
+          Math.pow(fenceCenter[0] - lat, 2) + 
+          Math.pow(fenceCenter[1] - lng, 2)
+        );
+        
+        // Increase speed factor to ensure we reach fence in time
+        // Stronger movement toward fence with only slight random variation
+        const speedFactor = 0.12; // Adjusted for faster movement
+        const randomVariation = 0.002; // Reduced for more direct path
+        
+        // Move more directly toward fence center with reduced randomness
+        lat += (fenceCenter[0] - lat) * speedFactor + (Math.random() - 0.5) * randomVariation;
+        lng += (fenceCenter[1] - lng) * speedFactor + (Math.random() - 0.5) * randomVariation;
+        
         const newPosition = [lat, lng];
         const nowInsideFence = isInsideFence(newPosition);
         const wasOutsideFence = !isInsideFence(elephant.position);
         const crossingIntoFence = wasOutsideFence && nowInsideFence;
-  
+        
         // Set risk based on position
         const newRisk = nowInsideFence ? "high" : "low";
-  
+        
         // Trigger alert when crossing into fence
         if (crossingIntoFence) {
           triggerAlert({
@@ -600,11 +619,11 @@ function MapController({ elephants, setElephants, onAlertTriggered }) {
             alert_type: "boundary_crossing"
           }, onAlertTriggered);
         }
-  
+        
         return {
           ...elephant,
           position: newPosition,
-          status: crossingIntoFence ? "crossing fence" : (Math.random() > 0.7 ? "stationary" : "moving"),
+          status: crossingIntoFence ? "crossing fence" : "moving",
           risk: newRisk,
           lastUpdated: "Just now",
           insideFence: nowInsideFence
@@ -640,7 +659,7 @@ function MapController({ elephants, setElephants, onAlertTriggered }) {
       }))
     );
     
-    // Slowed down simulation - increasing delay from 1s to 5s
+    // Using 5-second intervals for movement
     intervalRef.current = setInterval(moveElephants, 5000); // Update every 5 seconds
     
     return () => {
@@ -654,26 +673,16 @@ function MapController({ elephants, setElephants, onAlertTriggered }) {
 }
 
 const OpenStreetMap = () => {
-  // Initial elephant data
+  // Updated elephant data - removed Herd A, kept only Bull 01 and Herd B
   const [elephants, setElephants] = useState([
-    {
-      id: 1,
-      name: "Herd A",
-      type: "Group",
-      count: 5,
-      status: "moving",
-      position: [10.908774, 76.801011], // [lat, lng]
-      risk: "low",
-      lastUpdated: "Just now",
-      insideFence: false
-    },
     {
       id: 2,
       name: "Bull 01",
       type: "Individual",
       count: 1,
-      status: "stationary",
-      position: [11.1016683, 76.9046575], // Positioned closer to the fence
+      status: "moving",
+      // Starting position adjusted to better reach fence within time limit
+      position: [11.0916683, 76.9346575], 
       risk: "medium",
       lastUpdated: "Just now",
       insideFence: false
@@ -683,7 +692,7 @@ const OpenStreetMap = () => {
       name: "Herd B",
       type: "Group",
       count: 8,
-      status: "approaching",
+      status: "stationary",
       position: [11.0846, 76.9358],
       risk: "low",
       lastUpdated: "Just now",
@@ -821,6 +830,7 @@ const OpenStreetMap = () => {
           </div>
         </div>
       </div>
+      
       
       {/* Alert Log Panel */}
       <div className="rounded-xl border border-elephant-200 dark:border-elephant-800 shadow-card p-4">
