@@ -508,6 +508,8 @@
 // export default OpenStreetMap;
 
 
+
+
 import React, { useState, useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -529,13 +531,13 @@ const alertIcon = new L.Icon({
   popupAnchor: [0, -32],
 });
 
-// Fence boundary coordinates (polygon points)
+// Updated fence boundary coordinates around the specified center point: 11.1016683,76.9646575
 const fenceBoundary: [number, number][] = [
-  [10.9300, 76.9200],
-  [10.9500, 76.9800],
-  [10.9000, 77.0000],
-  [10.8800, 76.9400],
-  [10.9300, 76.9200]
+  [11.0916683, 76.9546575],
+  [11.1116683, 76.9546575],
+  [11.1116683, 76.9746575],
+  [11.0916683, 76.9746575],
+  [11.0916683, 76.9546575]
 ];
 
 // Component to handle map reference and animations
@@ -568,8 +570,8 @@ function MapController({ elephants, setElephants, onAlertTriggered }) {
       prev.map(elephant => {
         let [lat, lng] = elephant.position;
   
-        // Center of the fence (approximate)
-        const fenceCenter = [10.9300, 76.9600];
+        // Updated center of the fence
+        const fenceCenter = [11.1016683, 76.9646575];
   
         // If outside, move slightly toward the fence center
         if (!isInsideFence(elephant.position)) {
@@ -611,27 +613,6 @@ function MapController({ elephants, setElephants, onAlertTriggered }) {
     );
   };
   
-  
-  useEffect(() => {
-    setElephants(prev => 
-      prev.map(elephant => ({
-        ...elephant,
-        insideFence: isInsideFence(elephant.position),
-        risk: isInsideFence(elephant.position) ? "high" : "low"
-      }))
-    );
-  
-    // Reduced update interval to 1s (was 3s)
-    intervalRef.current = setInterval(moveElephants, 1000);
-  
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, []);
-  
-  
   // Send alert to the Flask endpoint
   const triggerAlert = async (alertData, callback) => {
     try {
@@ -659,8 +640,8 @@ function MapController({ elephants, setElephants, onAlertTriggered }) {
       }))
     );
     
-    // Start simulation
-    intervalRef.current = setInterval(moveElephants, 3000); // Update every 3 seconds
+    // Slowed down simulation - increasing delay from 1s to 5s
+    intervalRef.current = setInterval(moveElephants, 5000); // Update every 5 seconds
     
     return () => {
       if (intervalRef.current) {
@@ -692,7 +673,7 @@ const OpenStreetMap = () => {
       type: "Individual",
       count: 1,
       status: "stationary",
-      position: [10.9700, 77.0300],
+      position: [11.1016683, 76.9046575], // Positioned closer to the fence
       risk: "medium",
       lastUpdated: "Just now",
       insideFence: false
@@ -703,7 +684,7 @@ const OpenStreetMap = () => {
       type: "Group",
       count: 8,
       status: "approaching",
-      position: [10.9046, 76.8558],
+      position: [11.0846, 76.9358],
       risk: "low",
       lastUpdated: "Just now",
       insideFence: false
@@ -745,9 +726,9 @@ const OpenStreetMap = () => {
 
   return (
     <div className="flex flex-col space-y-4">
-      <div className="relative h-[600px] overflow-hidden rounded-xl border border-elephant-200 dark:border-elephant-800 shadow-card">
+      <div className="relative h-[500px] overflow-hidden rounded-xl border border-elephant-200 dark:border-elephant-800 shadow-card">
         <MapContainer
-          center={[10.9046, 76.9558]}
+          center={[11.1016683, 76.9646575]} // Centering map on the new fence location
           zoom={12}
           style={{ height: "100%", width: "100%" }}
         >
@@ -890,3 +871,4 @@ const OpenStreetMap = () => {
 };
 
 export default OpenStreetMap;
+

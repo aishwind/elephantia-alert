@@ -146,11 +146,11 @@ const AlertMap: React.FC<AlertMapProps> = ({ className }) => {
 
   // Simulated locations for the map markers (replace with real data in production)
   const locations = {
-    center: [10.9129, 76.9416] as [number, number], // Madukkarai, Tamil Nadu
-    alert: [10.9541, 76.9407] as [number, number],
-    warning: [10.8941, 76.9307] as [number, number],
-    elephant: [10.9341, 76.9507] as [number, number],
-    train: [11.0241, 76.9707] as [number, number]
+    center: [11.0168, 76.9558] as [number, number], // Center of Sri Lanka (example)
+    alert: [11.0168, 76.9558] as [number, number],
+    warning: [10.863303, 76.874619] as [number, number],
+    elephant: [10.896132, 76.886813] as [number, number],
+    train: [10.815843, 76.708895] as [number, number]
   };
 
   // Handle "My Location" button click
