@@ -19,9 +19,11 @@ const ElephantBehaviorAnalysis = ({ elephantData }) => {
       activityStatus = { label: "Normal", status: "success" as const };
     }
     
-    // Analyze feeding patterns
+    // Analyze feeding patterns - add null checks
     let feedingStatus;
-    if (activity.feedingPattern.includes("irregular")) {
+    if (!activity.feedingPattern) {
+      feedingStatus = { label: "Unknown", status: "warning" as const };
+    } else if (activity.feedingPattern.includes("irregular")) {
       feedingStatus = { label: "Irregular", status: "warning" as const };
     } else if (activity.feedingPattern.includes("reduced")) {
       feedingStatus = { label: "Reduced", status: "warning" as const };

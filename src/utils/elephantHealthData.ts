@@ -1,4 +1,3 @@
-
 export const elephantHealthData = [
   {
     id: "TNELE2021021",
@@ -22,6 +21,7 @@ export const elephantHealthData = [
       avgRestDuration: 1.5,
       peakActivityTime: "04:00 - 08:00",
       isNormalPattern: true,
+      feedingPattern: "normal", // Added feeding pattern
       hourlyData: [
         { hour: "00:00", level: 20, isResting: true },
         { hour: "01:00", level: 15, isResting: true },
@@ -133,6 +133,7 @@ export const elephantHealthData = [
       avgRestDuration: 1.7,
       peakActivityTime: "05:00 - 09:00",
       isNormalPattern: true,
+      feedingPattern: "normal", // Added feeding pattern
       hourlyData: [
         { hour: "00:00", level: 10, isResting: true },
         { hour: "01:00", level: 10, isResting: true },
@@ -237,6 +238,7 @@ export const elephantHealthData = [
       avgRestDuration: 2.2,
       peakActivityTime: "18:00 - 22:00",
       isNormalPattern: false,
+      feedingPattern: "reduced irregular", // Added feeding pattern with issues
       hourlyData: [
         { hour: "00:00", level: 60, isResting: false },
         { hour: "01:00", level: 45, isResting: false },
