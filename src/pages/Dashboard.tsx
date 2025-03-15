@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Transition from "@/components/Transition";
 import Navigation from "@/components/Navigation";
@@ -10,6 +9,8 @@ import Footer from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { useToast } from "@/components/ui/use-toast";
+import { elephantHealthData } from "@/utils/elephantHealthData";
 
 // Mock data for the charts
 const movementData = [
@@ -33,12 +34,58 @@ const alertData = [
 ];
 
 const Dashboard = () => {
+  const [alertAudio] = useState(new Audio("/alert-sound.mp3"));
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Check for boundary fence alerts when the dashboard loads
+    const boundaryAlerts = elephantHealthData.filter(
+      elephant => elephant.alert && elephant.alert.type === "boundary_fence"
+    );
+    
+    if (boundaryAlerts.length > 0) {
+      // Play alert sound for boundary crossings
+      alertAudio.play().catch(e => console.error("Error playing alert sound:", e));
+      
+      // Show toast notifications for each boundary alert
+      boundaryAlerts.forEach(elephant => {
+        toast({
+          title: "⚠️ Boundary Fence Alert",
+          description: `Elephant ${elephant.name} (${elephant.id}) has crossed a boundary fence at ${elephant.alert.location}.`,
+          variant: "destructive",
+        });
+      });
+    }
+    
+    // Set up interval to periodically check for new alerts (simulate real-time monitoring)
+    const alertCheckInterval = setInterval(() => {
+      const randomElephant = elephantHealthData[Math.floor(Math.random() * elephantHealthData.length)];
+      
+      // 10% chance of triggering a simulated boundary alert for demo purposes
+      if (randomElephant.alert && Math.random() < 0.1) {
+        alertAudio.play().catch(e => console.error("Error playing alert sound:", e));
+        
+        toast({
+          title: "⚠️ New Boundary Alert",
+          description: `Elephant ${randomElephant.name} (${randomElephant.id}) has crossed a boundary fence at ${randomElephant.alert.location}.`,
+          variant: "destructive",
+        });
+      }
+    }, 60000); // Check every minute
+    
+    return () => {
+      clearInterval(alertCheckInterval);
+    };
+  }, [alertAudio, toast]);
+
   return (
     <Transition>
       <div className="min-h-screen">
         <Navigation />
         
         <main className="pt-24 pb-16">
+          
+          
           <div className="section-container">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -66,6 +113,7 @@ const Dashboard = () => {
                 <AlertPanel className="h-full" />
               </div>
             </div>
+            
             
             <Tabs defaultValue="activity" className="w-full">
               <TabsList className="mb-6">
