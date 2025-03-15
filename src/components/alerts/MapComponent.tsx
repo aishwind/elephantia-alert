@@ -17,7 +17,7 @@ const defaultIcon = new L.Icon({
 const MapComponent: React.FC = () => {
   return (
     <MapContainer
-      center={[20.5937, 78.9629]} // Center on India, update as needed
+      center={[11.0168,76.9558]} // Center on India, update as needed
       zoom={5}
       style={{ height: "100%", width: "100%" }}
     >
@@ -25,7 +25,7 @@ const MapComponent: React.FC = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Marker position={[20.5937, 78.9629]} icon={defaultIcon}>
+      <Marker position={[11.0168, 76.9558]} icon={defaultIcon}>
         <Popup>Elephant Alert Here!</Popup>
       </Marker>
     </MapContainer>
